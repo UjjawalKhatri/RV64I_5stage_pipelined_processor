@@ -21,21 +21,7 @@ An industry-standard, synthesizable 64-bit 5-stage pipelined RISC-V (RV64I) proc
 
 ---
 
-## Architectural Overview
 
-```
-+-----------------------------------------------------------------------------------+
-|                                  RV64I PIPELINE DATAPATH                          |
-+-------------------+-------------------+-------------------+-------------------+---+
-| Instruction Fetch | Instruction Decode|   Execute Stage   |   Memory Access   | Write-Back Stage |
-|       (IF)        |       (ID)        |       (EX)        |       (MEM)       |       (WB)       |
-+-------------------+-------------------+-------------------+-------------------+------------------+
-| - PC Generation   | - Control Decoder | - 64-bit ALU      | - Word Memory     | - Register Write |
-| - 4KB Instr Mem   | - 32x64 RegFile   | - RAW Forwarding  | - Ld/Sd Forward   | - WB Mux         |
-| - IF/ID Register  | - Imm Generator   | - Branch Calc     | - MEM/WB Register |                  |
-|                   | - Bubble Mux      | - EX/MEM Register |                   |                  |
-+-------------------+-------------------+-------------------+-------------------+------------------+
-```
 
 ### Key Design Implementation Details
 

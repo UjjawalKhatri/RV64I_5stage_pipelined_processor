@@ -1,6 +1,6 @@
 # Synthesizable 64-bit 5-Stage Pipelined RV64I Processor Core
 
-An industry-standard, synthesizable 64-bit 5-stage pipelined RISC-V (RV64I) processor core designed in Verilog HDL (IEEE 1364-2001). The architecture is fully optimized for FPGA synthesis and implementation on Xilinx Artix-7 devices (`xc7a100tcsg324-1`). It features 3-way RAW data forwarding, load-use hazard mitigation, word-addressed single-port memory primitives, integrated hardware performance counters, and verified static timing closure at 100 MHz (**Worst Negative Slack: +2.947 ns**).
+An industry-standard, synthesizable 64-bit 5-stage pipelined RISC-V (RV64I) processor core designed in Verilog HDL (IEEE 1364-2001). The architecture is fully optimized for FPGA synthesis and implementation on Xilinx Artix-7 devices (`xc7a100tcsg324-1`). It features 3-way RAW data forwarding, load-use hazard mitigation, word-addressed single-port memory primitives, integrated hardware performance counters, and verified static timing closure at 50 MHz (**Worst Negative Slack: +2.947 ns**).
 
 ---
 
@@ -12,8 +12,8 @@ An industry-standard, synthesizable 64-bit 5-stage pipelined RISC-V (RV64I) proc
 | **Pipeline Stages** | 5 Stages: Instruction Fetch (IF), Instruction Decode (ID), Execute (EX), Memory Access (MEM), Write-Back (WB) |
 | **Data Path Width** | 64-bit Data Path / 32-bit Instruction Length |
 | **Target Device** | Xilinx Artix-7 FPGA (`xc7a100tcsg324-1` / Nexys A7-100T) |
-| **Target Clock Frequency** | 100 MHz (10.0 ns Period Constraint) |
-| **Achievable Operating Frequency** | ~141.7 MHz (10.0 ns - 2.947 ns WNS) |
+| **Target Clock Frequency** | 50 MHz (20.0 ns Period Constraint) |
+| **Achievable Operating Frequency** | ~58.64 MHz (20.0 ns - 2.947 ns WNS) |
 | **Worst Negative Slack (WNS)** | **+2.947 ns** (Setup Timing Constraint Met) |
 | **Worst Hold Slack (WHS)** | **+0.105 ns** (Hold Timing Constraint Met) |
 | **Measured CPI** | **1.24** (Fibonacci Benchmark Execution) |
@@ -63,6 +63,7 @@ Synthesis and static timing analysis (STA) were performed using Xilinx Vivado 20
 
 ### Static Timing Summary
 
+- **Target Period**: `20.000 ns` (50 MHz)
 - **Setup Slack (WNS)**: `+2.947 ns` (Passing)
 - **Hold Slack (WHS)**: `+0.105 ns` (Passing)
 - **Pulse Width Slack (WPWS)**: `+8.750 ns` (Passing)
@@ -110,7 +111,7 @@ Functional verification was conducted by running an iterative Fibonacci benchmar
 ```
 .
 ├── constraints/
-│   └── rv64i_artix7.xdc            # 100 MHz Timing Constraints File
+│   └── rv64i_artix7.xdc            # 50 MHz Timing Constraints File (20.0 ns Period)
 ├── results/
 │   ├── waveform ss.png             # XSim Behavioral Waveform Verification
 │   ├── timing.png                  # Vivado Static Timing Summary

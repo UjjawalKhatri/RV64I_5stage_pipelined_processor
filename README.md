@@ -172,3 +172,10 @@ python tools/assembler.py program.s -o rtl/instructions.txt
 ## License
 
 This project is licensed under the MIT License.
+
+## Author
+
+Molik Rajvanshi
+and 
+Ujjawal Khatri
+

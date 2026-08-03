@@ -1,0 +1,18 @@
+# Vivado Build & Temporary Files
+.Xil/
+*.log
+*.jou
+*.pb
+*.dcp
+*.wdb
+*.str
+*.zip
+*.vds
+*.jou
+xsim.dir/
+*.sim/
+.Xil*
+
+# Operating System Files
+.DS_Store
+Thumbs.db

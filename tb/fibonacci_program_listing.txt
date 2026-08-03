@@ -1,0 +1,55 @@
+// ================================================================================
+// RV64I Fibonacci Program — Assembly Listing with Machine Code
+// Target: 5-Stage Pipelined RV64I Processor (Vivado Behavioral Simulation)
+// ================================================================================
+//
+// Register Allocation:
+//   x1 = Loop counter (starts at 10, decrements each iteration)
+//   x2 = fib(n-2) = a (previous Fibonacci number)
+//   x3 = fib(n-1) = b (current Fibonacci number)
+//   x4 = fib(n)   = a + b (next Fibonacci number, temp)
+//   x5 = Memory pointer (starts at 0, increments by 8 bytes per store)
+//
+// Expected Fibonacci Sequence: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34
+//
+// ================================================================================
+// PC       Hex Code     Assembly                    Description
+// ================================================================================
+
+// ---- INITIALIZATION ----
+// 0x00     00A00093     addi x1, x0, 10            x1 = 10 (loop counter)
+// 0x04     00000113     addi x2, x0, 0             x2 = 0  (fib_prev = 0)
+// 0x08     00100193     addi x3, x0, 1             x3 = 1  (fib_curr = 1)
+// 0x0C     00000293     addi x5, x0, 0             x5 = 0  (memory pointer)
+
+// ---- FIBONACCI LOOP (PC 0x10 — 0x2C) ----
+// 0x10     0022B023     sd   x2, 0(x5)             Store fib number to DataMem[x5]
+// 0x14     00310233     add  x4, x2, x3            x4 = a + b (compute next Fibonacci)
+// 0x18     00018113     addi x2, x3, 0             a = b    (shift: fib_prev = fib_curr)
+// 0x1C     00020193     addi x3, x4, 0             b = next (shift: fib_curr = fib_next)
+// 0x20     00828293     addi x5, x5, 8             Increment memory pointer by 8 bytes
+// 0x24     FFF08093     addi x1, x1, -1            Decrement loop counter
+// 0x28     00008663     beq  x1, x0, +12           If counter == 0, exit loop → PC 0x34
+// 0x2C     FE0002E3     beq  x0, x0, -28           Unconditional jump back → PC 0x10
+
+// ---- POST-LOOP: LOAD FIBONACCI FROM MEMORY (verification) ----
+// 0x30     00000013     nop                        Pipeline drain (dead code, never reached)
+// 0x34     00003503     ld   x10, 0(x0)            x10 = DataMem[0]  = fib(0) = 0
+// 0x38     00803583     ld   x11, 8(x0)            x11 = DataMem[8]  = fib(1) = 1
+// 0x3C     01003603     ld   x12, 16(x0)           x12 = DataMem[16] = fib(2) = 1
+// 0x40     01803683     ld   x13, 24(x0)           x13 = DataMem[24] = fib(3) = 2
+// 0x44     02003703     ld   x14, 32(x0)           x14 = DataMem[32] = fib(4) = 3
+// 0x48     02803783     ld   x15, 40(x0)           x15 = DataMem[40] = fib(5) = 5
+// 0x4C     03003803     ld   x16, 48(x0)           x16 = DataMem[48] = fib(6) = 8
+// 0x50     03803883     ld   x17, 56(x0)           x17 = DataMem[56] = fib(7) = 13
+// 0x54     04003903     ld   x18, 64(x0)           x18 = DataMem[64] = fib(8) = 21
+// 0x58     04803983     ld   x19, 72(x0)           x19 = DataMem[72] = fib(9) = 34
+
+// ---- FINAL COMPUTATION ----
+// 0x5C     01390A33     add  x20, x18, x19         x20 = fib(8) + fib(9) = 21 + 34 = 55
+
+// ---- HALT ----
+// 0x60     00000063     beq  x0, x0, 0             Infinite self-loop (processor halt)
+// 0x64     00000013     nop
+// 0x68     00000013     nop
+// 0x6C     00000013     nop
